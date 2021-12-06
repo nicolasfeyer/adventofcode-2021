@@ -1,38 +1,46 @@
-lines_raw = open('input.txt', 'r').readlines()
-
-lines = list()
-
-for l in lines_raw:
-    l = l.strip()
-    x1_y1 = l.split(" -> ")[0]
-    x2_y2 = l.split(" -> ")[1]
-    lines.append(
-        ((int(x1_y1.split(",")[0]), int(x1_y1.split(",")[1])), (int(x2_y2.split(",")[0]), int(x2_y2.split(",")[1]))))
+from typing import Tuple, Set
 
 
-def line_intersection(line1, line2):
-    xdiff = (line1[0][0] - line1[1][0], line2[0][0] - line2[1][0])
-    ydiff = (line1[0][1] - line1[1][1], line2[0][1] - line2[1][1])
+def get_pts_of_line(line: Tuple[Tuple[int]], diagonal=False) -> Set:
+    (x1, y1), (x2, y2) = line
+    if x1 == x2:  # (3,0),(3,1) ->
+        return set([(x1, i) for i in range(min(y1, y2), max(y1, y2) + 1)])
+    elif y1 == y2:
+        return set([(i, y1) for i in range(min(x1, x2), max(x1, x2) + 1)])
+    else:  # ignore diagonal
+        if not diagonal:
+            return set()
+        else:
+            fx1 = x1
+            fx2 = x2 + (1 if x1 < x2 else -1)
+            fy1 = y1
+            fy2 = y2 + (1 if y1 < y2 else -1)
+            return set(
+                [(i, j) for i, j in
+                 zip(range(fx1, fx2, -1 if fx1 > fx2 else 1), range(fy1, fy2, -1 if fy1 > fy2 else 1))])
 
-    def det(a, b):
-        return a[0] * b[1] - a[1] * b[0]
 
-    div = det(xdiff, ydiff)
-    if div == 0:
-        return None
-
-    d = (det(*line1), det(*line2))
-    x = det(d, xdiff) / div
-    y = det(d, ydiff) / div
-    return x, y
+def points_of_intersection(line1, line2, diagonal=False) -> Set:
+    return get_pts_of_line(line1, diagonal).intersection(get_pts_of_line(line2, diagonal))
 
 
-intersections_unique = set()
-for l1 in lines:
-    for l2 in lines:
-        if l1 != l2:
-            pts = line_intersection(l1, l2)
-            if pts:
-                intersections_unique.add(pts)
+def number_of_dangerous_areas(lines_, diagonal=False):
+    points_occurence = dict()
+    for l1 in lines_:
+        pts = get_pts_of_line(l1, diagonal=diagonal)
+        for p in pts:
+            if p not in points_occurence:
+                points_occurence[p] = 1
+            else:
+                points_occurence[p] += 1
 
-print(len(intersections_unique))
+    print(len({k: v for k, v in points_occurence.items() if v > 1}))
+
+
+if __name__ == "__main__":
+    lines = [((int(l.strip().split(" -> ")[0].split(",")[0]), int(l.strip().split(" -> ")[0].split(",")[1])),
+              (int(l.strip().split(" -> ")[1].split(",")[0]), int(l.strip().split(" -> ")[1].split(",")[1]))) for l in
+             open('input.txt', 'r').readlines()]
+
+    number_of_dangerous_areas(lines, diagonal=False)
+    number_of_dangerous_areas(lines, diagonal=True)
