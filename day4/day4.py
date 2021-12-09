@@ -2,7 +2,7 @@ import numpy as np
 
 
 def read_input():
-    file = open("input.txt", "r")
+    file = open("data/day4.txt", "r")
     numbers = [int(x) for x in next(file).split(",")]
 
     counter = 0

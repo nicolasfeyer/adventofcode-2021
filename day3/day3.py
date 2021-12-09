@@ -6,7 +6,7 @@ def read_input():
     # for i in range(12):
     #     l.append([int(x[i]) for x in open("input.txt", "r").readlines()])
     # return l, [x.strip() for x in open("input.txt", "r").readlines()]
-    return np.genfromtxt('input.txt', delimiter=1, dtype=int, usecols=range(12))
+    return np.genfromtxt('data/day3.txt', delimiter=1, dtype=int, usecols=range(12))
     # return np.genfromtxt('ex.txt', delimiter=1, dtype=int, usecols=range(5))
 
 

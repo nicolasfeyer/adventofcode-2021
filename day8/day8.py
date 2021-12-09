@@ -4,7 +4,7 @@ from typing import List, Dict
 
 def read_input():
     return [(l.strip().split(" | ")[0].split(" "), l.strip().split(" | ")[1].split(" ")) for l in
-            open("input.txt", "r").readlines()]
+            open("data/day8.txt", "r").readlines()]
 
 
 def part_one(lines):

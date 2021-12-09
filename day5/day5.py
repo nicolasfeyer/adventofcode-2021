@@ -40,7 +40,7 @@ def number_of_dangerous_areas(lines_, diagonal=False):
 if __name__ == "__main__":
     lines = [((int(l.strip().split(" -> ")[0].split(",")[0]), int(l.strip().split(" -> ")[0].split(",")[1])),
               (int(l.strip().split(" -> ")[1].split(",")[0]), int(l.strip().split(" -> ")[1].split(",")[1]))) for l in
-             open('input.txt', 'r').readlines()]
+             open('data/day5.txt', 'r').readlines()]
 
     number_of_dangerous_areas(lines, diagonal=False)
     number_of_dangerous_areas(lines, diagonal=True)

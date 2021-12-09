@@ -1,3 +1,4 @@
+import time
 from typing import List, Tuple
 
 import numpy as np
@@ -5,7 +6,7 @@ import numpy as np
 
 def read_input():
     # read the matrix and add a boolean to each cell to model if a cell was visited
-    return np.array([[[y, False] for y in x] for x in np.genfromtxt('input.txt', delimiter=1, dtype=int)])
+    return np.array([[[y, False] for y in x] for x in np.genfromtxt('data/day9.txt', delimiter=1, dtype=int)])
 
 
 # find basin recursively with a point
@@ -82,5 +83,9 @@ def part_one(matrix, draw=False):
 
 
 if __name__ == "__main__":
+    t0 = time.time()
     low_points = part_one(read_input(), draw=False)
+    t1 = time.time()
     part_two(read_input(), low_points, draw=False)
+    t2 = time.time()
+    print("total {total}ms".format(total=t2 - t1))

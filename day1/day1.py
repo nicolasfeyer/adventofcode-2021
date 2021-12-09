@@ -2,7 +2,7 @@ from itertools import islice
 
 
 def read_input():
-    return [int(l.strip()) for l in open('input.txt', 'r').readlines()]
+    return [int(l.strip()) for l in open('data/day1.txt', 'r').readlines()]
 
 
 def part_one(depths_):

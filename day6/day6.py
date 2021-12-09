@@ -4,7 +4,7 @@ import numpy as np
 
 
 def read_input():
-    return np.array([int(x) for x in next(open("input.txt", "r")).split(",")])
+    return np.array([int(x) for x in next(open("data/day6.txt", "r")).split(",")])
 
 
 # https://dev.to/qviper/advent-of-code-python-solution-day-6-22hl

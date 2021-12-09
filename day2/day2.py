@@ -1,5 +1,5 @@
 def read_input():
-    return [(l.strip().split(" ")[0], int(l.strip().split(" ")[1])) for l in open('input.txt', 'r').readlines()]
+    return [(l.strip().split(" ")[0], int(l.strip().split(" ")[1])) for l in open('data/day2.txt', 'r').readlines()]
 
 
 def part_one(cmds):
