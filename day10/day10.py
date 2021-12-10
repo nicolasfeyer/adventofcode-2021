@@ -47,13 +47,14 @@ def part_one_two(lines):
     score_incomplete = list()
     for l in lines:
         state, s = get_line_state(l)
-        if state == LineState.CORRUPTED:
-            score_corrupted += map_score_corrupted[s]
-        elif state == LineState.INCOMPLETE:
-            score = 0
-            for c in s:
-                score = score * 5 + map_score_incomplete[c]
-            score_incomplete.append(score)
+        match state:
+            case LineState.CORRUPTED:
+                score_corrupted += map_score_corrupted[s]
+            case LineState.INCOMPLETE:
+                score = 0
+                for c in s:
+                    score = score * 5 + map_score_incomplete[c]
+                score_incomplete.append(score)
 
     print(score_corrupted)
     if len(score_incomplete) > 0:
