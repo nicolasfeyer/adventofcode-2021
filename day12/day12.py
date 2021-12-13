@@ -2,13 +2,12 @@ import time
 from collections import Counter
 
 import networkx as nx
-import matplotlib.pyplot as plt
 
 
 def read_input() -> nx.Graph:
     graph = nx.Graph()
     with open("data/day12.txt") as file:
-    # with open("day12/test.txt") as file:
+        # with open("day12/test.txt") as file:
         from_to = set()
         for l in file:
             from_ = l.split("-")[0].strip()
@@ -28,37 +27,22 @@ def read_input() -> nx.Graph:
     return graph
 
 
-def find_all_paths_part_one(graph, start, end, path=[]):
+def find_all_paths(graph, start, end, path=[], can_revisit_small_once=False):
     path = path + [start]
     if start == end:
         return [path]
     if not graph.has_node(start):
         return []
     paths = []
+    if can_revisit_small_once:
+        counts = Counter(n for n in path if n.islower())
     for node in graph.neighbors(start):
+        filter_lower_case = (sum(counts.values()) <= len(counts) + 1) if can_revisit_small_once else graph.nodes[node][
+                                                                                                         "visited"] != 1
         # if node accepted:
-        if node != "start" and (graph.nodes[node]["visited"] != 1 or graph.nodes[node]["big"]):
+        if node != "start" and (filter_lower_case or graph.nodes[node]["big"]):
             graph.nodes[node]["visited"] += 1
-            newpaths = find_all_paths_part_one(graph, node, end, path)
-            graph.nodes[node]["visited"] -= 1
-            for newpath in newpaths:
-                paths.append(newpath)
-    return paths
-
-
-def find_all_paths_part_two(graph, start, end, path=[]):
-    path = path + [start]
-    if start == end:
-        return [path]
-    if not graph.has_node(start):
-        return []
-    paths = []
-    counts = Counter(n for n in path if n.islower())
-    for node in graph.neighbors(start):
-        # if node accepted:
-        if node != "start" and (sum(counts.values()) <= len(counts) + 1 or graph.nodes[node]["big"]):
-            graph.nodes[node]["visited"] += 1
-            newpaths = find_all_paths_part_two(graph, node, end, path)
+            newpaths = find_all_paths(graph, node, end, path, can_revisit_small_once)
             graph.nodes[node]["visited"] -= 1
             for newpath in newpaths:
                 paths.append(newpath)
@@ -66,9 +50,9 @@ def find_all_paths_part_two(graph, start, end, path=[]):
 
 
 def part_one_two(graph):
-    paths = find_all_paths_part_one(graph, "start", "end")
+    paths = find_all_paths(graph, "start", "end", can_revisit_small_once=False)
     print(len(paths))
-    paths = find_all_paths_part_two(graph, "start", "end")
+    paths = find_all_paths(graph, "start", "end", can_revisit_small_once=True)
     print(len(paths))
 
 

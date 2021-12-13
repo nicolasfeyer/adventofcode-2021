@@ -5,8 +5,8 @@ import numpy as np
 
 
 def read_input():
-    return np.array([[[y, False] for y in x] for x in np.genfromtxt('data/day11.txt', delimiter=1, dtype=int)])
-    # return np.array([[[y, False] for y in x] for x in np.genfromtxt('day11/test1.txt', delimiter=1, dtype=int)])
+    # return np.array([[[y, False] for y in x] for x in np.genfromtxt('data/day11.txt', delimiter=1, dtype=int)])
+    return np.array([[[y, False] for y in x] for x in np.genfromtxt('day11/test1.txt', delimiter=1, dtype=int)])
 
 
 def safe_get_cell(i, j, m, n) -> Optional[Tuple]:
@@ -119,7 +119,7 @@ def part_two(matrix):
 
 if __name__ == "__main__":
     t0 = time.time()
-    part_one(read_input())
+    part_one(read_input(), draw=True)
     t1 = time.time()
     part_two(read_input())
     t2 = time.time()
