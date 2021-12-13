@@ -1,6 +1,6 @@
 import time
-
 import numpy as np
+from advent_of_code_ocr import convert_6
 
 
 def read_input():
@@ -22,7 +22,37 @@ def read_input():
     return positions, folds
 
 
-def print_matrix(positions, width, height):
+# https://github.com/bsoyka/advent-of-code-ocr
+ALPHABET_6 = {
+    ".##.\n#..#\n#..#\n####\n#..#\n#..#": "A",
+    "###.\n#..#\n###.\n#..#\n#..#\n###.": "B",
+    ".##.\n#..#\n#...\n#...\n#..#\n.##.": "C",
+    "####\n#...\n###.\n#...\n#...\n####": "E",
+    "####\n#...\n###.\n#...\n#...\n#...": "F",
+    ".##.\n#..#\n#...\n#.##\n#..#\n.###": "G",
+    "#..#\n#..#\n####\n#..#\n#..#\n#..#": "H",
+    ".###\n..#.\n..#.\n..#.\n..#.\n.###": "I",
+    "..##\n...#\n...#\n...#\n#..#\n.##.": "J",
+    "#..#\n#.#.\n##..\n#.#.\n#.#.\n#..#": "K",
+    "#...\n#...\n#...\n#...\n#...\n####": "L",
+    ".##.\n#..#\n#..#\n#..#\n#..#\n.##.": "O",
+    "###.\n#..#\n#..#\n###.\n#...\n#...": "P",
+    "###.\n#..#\n#..#\n###.\n#.#.\n#..#": "R",
+    ".###\n#...\n#...\n.##.\n...#\n###.": "S",
+    "#..#\n#..#\n#..#\n#..#\n#..#\n.##.": "U",
+    "#...\n#...\n.#.#\n..#.\n..#.\n..#.": "Y",
+    "####\n...#\n..#.\n.#..\n#...\n####": "Z",
+}
+
+
+def print_numpy_matrix(matrix):
+    for j in range(matrix.shape[1]):
+        for i in range(matrix.shape[0]):
+            print(matrix[i][j], end="")
+        print()
+
+
+def string_matrix(positions, width, height, draw=True):
     if not width:
         width = max([p[0] for p in positions])
 
@@ -35,10 +65,23 @@ def print_matrix(positions, width, height):
     for p in positions:
         matrix[p[0]][p[1]] = "#"
 
-    for j in range(height):
-        for i in range(width):
-            print(matrix[i][j], end="")
-        print()
+    print_numpy_matrix(matrix)
+
+    # OCR
+    print("-- OCR (lol) --")
+    matrix = matrix[~np.all(matrix == '.', axis=1)]
+    chars = np.vsplit(matrix, 8)
+
+    for c_m in chars:
+        c_m = c_m.T
+        c_s = ""
+        for i in range(c_m.shape[0]):
+            for j in range(c_m.shape[1]):
+                c_s += c_m[i][j]
+            c_s += "\n"
+        print(ALPHABET_6[c_s[:-1]], end="")
+
+    print()
 
 
 def part_one_two(input):
@@ -74,7 +117,8 @@ def part_one_two(input):
             nbr_first_fold = len(positions)
 
     print(nbr_first_fold)
-    print_matrix(positions, max_x, max_y)
+    string_matrix(positions, max_x, max_y)
+    # print(convert_6(string_matrix(positions, max_x, max_y)))
 
 
 if __name__ == "__main__":
