@@ -16,10 +16,6 @@ def read_input():
     return template, rules
 
 
-def find_all(string, patter):
-    return [m.start() for m in re.finditer(patter, string)]
-
-
 def insert_char_in_string(string, c, pos):
     return string[:pos + 1] + c + string[pos + 1:]
 
@@ -38,10 +34,6 @@ def part_one_two_naive(input, steps):
 
     count = Counter(list(template))
     print(max(count.values()) - min(count.values()))
-
-
-def transform_rules(rules):
-    return {k: (k[0] + v, v + k[1]) for k, v in rules.items()}
 
 
 def part_one_two_quicker(input, steps):
